@@ -1,21 +1,38 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Product from './pages/product';
-import Pricing from './pages/pricing';
-import Home from './pages/home';
-import NotFound from './pages/not-fonud';
-import Layout from './layout';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import {
+  Home,
+  Product,
+  Pricing,
+  NotFound,
+  Login,
+  AppPage,
+} from './pages/index';
+import CityList from './components/city-list/city-list';
+import CountryList from './components/country-list/country-list';
+import City from './components/city/city';
+import Form from './components/form/Form';
+import { CitiesProvider } from './context/cities-context';
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path='app' element={<Layout />} />
-        <Route path='/' element={<Home />} />
-        <Route path='product' element={<Product />} />
-        <Route path='pricing' element={<Pricing />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-    </BrowserRouter>
+    <CitiesProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='app' element={<AppPage />}>
+            <Route index element={<Navigate replace to='cities' />} />
+            <Route path='cities' element={<CityList />} />
+            <Route path='cities/:id' element={<City />} />
+            <Route path='countries' element={<CountryList />} />
+            <Route path='form' element={<Form />} />
+          </Route>
+          <Route path='/' element={<Home />} />
+          <Route path='product' element={<Product />} />
+          <Route path='pricing' element={<Pricing />} />
+          <Route path='*' element={<NotFound />} />
+          <Route path='login' element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+    </CitiesProvider>
   );
 }
 
